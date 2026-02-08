@@ -1,0 +1,57 @@
+package com.alex.emarket_api.service.impl;
+
+import com.alex.emarket_api.entity.Product;
+import com.alex.emarket_api.repository.ProductRepository;
+import com.alex.emarket_api.service.ProductService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository repository;
+
+    public ProductServiceImpl(ProductRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Product getProductById(Long id) {
+        List<Product> findAll = repository.findAll();
+        return findAll.stream().filter(product -> product.getIdProduct().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+    }
+
+    @Override
+    public Product saveProduct(Product product) {
+        Optional<Product> existing = repository.findByName(product.getName());
+        if (existing.isPresent()) {
+            throw new RuntimeException("Product already exists in the database");
+        }
+        return repository.save(product);
+    }
+
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        Product productSelected = repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found" + id));
+        productSelected.setName(product.getName());
+        productSelected.setType(product.getType());
+        return repository.save(productSelected);
+
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found"+id));
+        repository.deleteById(id);
+    }
+}
