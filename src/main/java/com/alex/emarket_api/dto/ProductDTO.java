@@ -1,12 +1,12 @@
 package com.alex.emarket_api.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
 public class ProductDTO {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long idProduct;
     private String nameProduct;
     private String typeProduct;

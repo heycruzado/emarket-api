@@ -1,5 +1,6 @@
 package com.alex.emarket_api.service.impl;
 
+import com.alex.emarket_api.dto.TicketDTO;
 import com.alex.emarket_api.entity.Product;
 import com.alex.emarket_api.entity.Ticket;
 import com.alex.emarket_api.repository.TicketRepository;
@@ -48,4 +49,5 @@ public class TicketServiceImpl implements TicketProductService {
         repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found"+id));
         repository.deleteById(id);
     }
+
 }

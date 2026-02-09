@@ -1,18 +1,19 @@
 package com.alex.emarket_api.dto;
 
-import com.alex.emarket_api.entity.Client;
-import com.alex.emarket_api.entity.Product;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Objects;
 
 public class TicketDTO {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long idTicket;
 
+
     private ClientDTO clientTicket;
+
     private List<ProductDTO> productsTicket;
 
     public TicketDTO() {

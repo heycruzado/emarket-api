@@ -38,15 +38,15 @@ public class TicketController {
     }
 
     @PostMapping
-    public ResponseEntity<TicketDTO> saveClient(@RequestBody Ticket ticket){
-        TicketDTO ticketDTO = convertToDTO(service.saveTicket(ticket));
-        return ResponseEntity.status(HttpStatus.CREATED).body(ticketDTO);
+    public ResponseEntity<TicketDTO> saveClient(@RequestBody TicketDTO ticketDTO){
+        Ticket ticket = service.saveTicket(convertToToEntity(ticketDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(ticket));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketDTO> updateClient(@PathVariable("id") Long id, @RequestBody Ticket ticket){
-        TicketDTO ticketDTO = convertToDTO(service.saveTicket(ticket));
-        return ResponseEntity.ok().body(ticketDTO);
+    public ResponseEntity<TicketDTO> updateClient(@PathVariable("id") Long id, @RequestBody TicketDTO ticketDTO){
+        Ticket ticket = service.updateTicket(id, convertToToEntity(ticketDTO));
+        return ResponseEntity.ok().body(convertToDTO(ticket));
     }
 
     @DeleteMapping("/{id}")
@@ -59,7 +59,7 @@ public class TicketController {
         return mapper.map(ticket, TicketDTO.class);
     }
 
-    private Ticket convertoToTicket(TicketDTO ticketDTO){
+    private Ticket convertToToEntity(TicketDTO ticketDTO){
         return mapper.map(ticketDTO, Ticket.class);
     }
 

@@ -1,7 +1,9 @@
 package com.alex.emarket_api.controller;
 
 import com.alex.emarket_api.config.MapperConfig;
+import com.alex.emarket_api.dto.ClientDTO;
 import com.alex.emarket_api.dto.ProductDTO;
+import com.alex.emarket_api.entity.Client;
 import com.alex.emarket_api.entity.Product;
 import com.alex.emarket_api.service.ProductService;
 import org.modelmapper.ModelMapper;
@@ -24,23 +26,30 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
-        return ResponseEntity.ok(service.getAllProducts());
+    public ResponseEntity<List<ProductDTO>> getProducts() {
+        List<ProductDTO> list = service.getAllProducts()
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id){
-        return ResponseEntity.ok(service.getProductById(id));
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long id){
+        ProductDTO productDTO = convertToDTO(service.getProductById(id));
+        return ResponseEntity.ok().body(productDTO);
     }
 
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveProduct(product));
+    public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO productDTO){
+        Product product = service.saveProduct(convertToEntity(productDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product){
-        return ResponseEntity.ok(service.updateProduct(id, product));
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO productDTO){
+        Product product = service.updateProduct(id, convertToEntity(productDTO));
+        return ResponseEntity.ok().body(product);
     }
 
     @DeleteMapping("/{id}")
@@ -56,4 +65,5 @@ public class ProductController {
     private Product convertToEntity(ProductDTO dto){
         return mapper.map(dto, Product.class);
     }
+
 }
