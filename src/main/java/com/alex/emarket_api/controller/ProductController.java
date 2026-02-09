@@ -1,7 +1,10 @@
 package com.alex.emarket_api.controller;
 
+import com.alex.emarket_api.config.MapperConfig;
+import com.alex.emarket_api.dto.ProductDTO;
 import com.alex.emarket_api.entity.Product;
 import com.alex.emarket_api.service.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +16,11 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
+    private final ModelMapper mapper;
 
-    public ProductController(ProductService service) {
+    public ProductController(ProductService service, ModelMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
@@ -42,5 +47,13 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private ProductDTO convertToDTO(Product product){
+        return mapper.map(product, ProductDTO.class);
+    }
+
+    private Product convertToEntity(ProductDTO dto){
+        return mapper.map(dto, Product.class);
     }
 }
