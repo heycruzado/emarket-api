@@ -1,19 +1,22 @@
 package com.alex.emarket_api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id_product")
     private Long idProduct;
+
+    @Column(name = "product_name", nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String type;
 
     public Product() {

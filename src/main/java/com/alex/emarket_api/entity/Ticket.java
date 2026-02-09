@@ -6,14 +6,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "tickets")
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTicket;
 
-    @ManyToOne
-    @JoinColumn(name = "idClient")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_client", nullable = false)
     private Client client;
 
     @ManyToMany

@@ -1,27 +1,26 @@
 package com.alex.emarket_api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idClient;
+
+    @Column(name = "name_client")
     private String name;
 
     public Client() {
     }
 
-    public Client(Long idClient, String name, String ticket) {
+    public Client(Long idClient, String name) {
         this.idClient = idClient;
         this.name = name;
-
     }
 
     public Long getIdClient() {
