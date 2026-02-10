@@ -1,13 +1,12 @@
 package com.alex.emarket_api.controller;
 
-import com.alex.emarket_api.config.MapperConfig;
-import com.alex.emarket_api.dto.ClientDTO;
+
 import com.alex.emarket_api.dto.ProductDTO;
-import com.alex.emarket_api.entity.Client;
 import com.alex.emarket_api.entity.Product;
-import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.service.ProductService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +56,13 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) throws Exception {
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/pagination")
+    public ResponseEntity<Page<ProductDTO>> findPage(Pageable pageable) throws Exception{
+        Page<ProductDTO> page = service.findPage(pageable).map(this::convertToDTO);
+
+        return ResponseEntity.ok().body(page);
     }
 
     private ProductDTO convertToDTO(Product product){

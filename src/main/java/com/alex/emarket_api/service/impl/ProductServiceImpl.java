@@ -4,6 +4,8 @@ import com.alex.emarket_api.entity.Product;
 import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.repository.ProductRepository;
 import com.alex.emarket_api.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,4 +57,11 @@ public class ProductServiceImpl implements ProductService {
         repository.findById(id).orElseThrow(() -> new ModelNotFoundException("Id not found"+id));
         repository.deleteById(id);
     }
+
+    @Override
+    public Page<Product> findPage(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+
 }
