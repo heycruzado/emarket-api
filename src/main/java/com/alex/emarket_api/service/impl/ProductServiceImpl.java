@@ -1,6 +1,7 @@
 package com.alex.emarket_api.service.impl;
 
 import com.alex.emarket_api.entity.Product;
+import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.repository.ProductRepository;
 import com.alex.emarket_api.service.ProductService;
 import org.springframework.stereotype.Service;
@@ -18,21 +19,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts()  throws Exception{
         return repository.findAll();
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public Product getProductById(Long id) throws Exception {
         List<Product> findAll = repository.findAll();
         return findAll.stream().filter(product -> product.getIdProduct().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ModelNotFoundException("Product not found"));
 
     }
 
     @Override
-    public Product saveProduct(Product product) {
+    public Product saveProduct(Product product) throws Exception {
         Optional<Product> existing = repository.findByName(product.getName());
         if (existing.isPresent()) {
             throw new RuntimeException("Product already exists in the database");
@@ -41,8 +42,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
-        Product productSelected = repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found" + id));
+    public Product updateProduct(Long id, Product product) throws Exception {
+        Product productSelected = repository.findById(id).orElseThrow(() -> new ModelNotFoundException("Id not found" + id));
         productSelected.setName(product.getName());
         productSelected.setType(product.getType());
         return repository.save(productSelected);
@@ -50,8 +51,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found"+id));
+    public void deleteProduct(Long id)  throws Exception {
+        repository.findById(id).orElseThrow(() -> new ModelNotFoundException("Id not found"+id));
         repository.deleteById(id);
     }
 }

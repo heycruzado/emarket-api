@@ -3,6 +3,7 @@ package com.alex.emarket_api.controller;
 import com.alex.emarket_api.dto.TicketDTO;
 import com.alex.emarket_api.entity.Client;
 import com.alex.emarket_api.entity.Ticket;
+import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.service.TicketProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class TicketController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TicketDTO>> getClients(){
+    public ResponseEntity<List<TicketDTO>> getClients() throws Exception {
         List<TicketDTO> list = service.getAllTickets().stream()
                 .map(this::convertToDTO)
                 .toList();
@@ -32,25 +33,25 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketDTO> getClientById(@PathVariable("id") Long id){
+    public ResponseEntity<TicketDTO> getClientById(@PathVariable("id") Long id) throws Exception {
         TicketDTO ticketDTO = convertToDTO(service.getTicketById(id));
         return ResponseEntity.ok(ticketDTO);
     }
 
     @PostMapping
-    public ResponseEntity<TicketDTO> saveClient(@RequestBody TicketDTO ticketDTO){
+    public ResponseEntity<TicketDTO> saveClient(@RequestBody TicketDTO ticketDTO) throws Exception {
         Ticket ticket = service.saveTicket(convertToToEntity(ticketDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(ticket));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketDTO> updateClient(@PathVariable("id") Long id, @RequestBody TicketDTO ticketDTO){
+    public ResponseEntity<TicketDTO> updateClient(@PathVariable("id") Long id, @RequestBody TicketDTO ticketDTO) throws Exception {
         Ticket ticket = service.updateTicket(id, convertToToEntity(ticketDTO));
         return ResponseEntity.ok().body(convertToDTO(ticket));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) throws Exception {
         service.deleteTicket(id);
         return ResponseEntity.noContent().build();
     }

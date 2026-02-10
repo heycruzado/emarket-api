@@ -5,6 +5,7 @@ import com.alex.emarket_api.dto.ClientDTO;
 import com.alex.emarket_api.dto.ProductDTO;
 import com.alex.emarket_api.entity.Client;
 import com.alex.emarket_api.entity.Product;
+import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getProducts() {
+    public ResponseEntity<List<ProductDTO>> getProducts() throws Exception {
         List<ProductDTO> list = service.getAllProducts()
                 .stream()
                 .map(this::convertToDTO)
@@ -35,25 +36,25 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long id){
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long id) throws Exception {
         ProductDTO productDTO = convertToDTO(service.getProductById(id));
         return ResponseEntity.ok().body(productDTO);
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO productDTO) throws Exception {
         Product product = service.saveProduct(convertToEntity(productDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO productDTO){
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO productDTO) throws Exception {
         Product product = service.updateProduct(id, convertToEntity(productDTO));
         return ResponseEntity.ok().body(product);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) throws Exception {
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,6 +1,7 @@
 package com.alex.emarket_api.service.impl;
 
 import com.alex.emarket_api.entity.Client;
+import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.repository.ClientRepository;
 import com.alex.emarket_api.service.ClientService;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getAllClients() {
+    public List<Client> getAllClients() throws Exception {
         return repository.findAll();
     }
 
     @Override
-    public Client getClientById(Long id) {
+    public Client getClientById(Long id) throws Exception {
         List<Client> findAll = repository.findAll();
         return findAll.stream().filter(client -> client.getIdClient().equals(id))
                 .findFirst()
@@ -31,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client saveClient(Client client) {
+    public Client saveClient(Client client) throws Exception{
         Optional<Client> existing = repository.findByName(client.getName());
         if(existing.isPresent()){
             throw new RuntimeException("Client already exists in the database");
@@ -40,15 +41,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updateClient(Long id, Client client) {
-        Client clientSelected = repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found" + id));
+    public Client updateClient(Long id, Client client) throws Exception {
+        Client clientSelected = repository.findById(id).orElseThrow(() -> new ModelNotFoundException("Id not found" + id));
         clientSelected.setName(client.getName());
         return repository.save(clientSelected);
     }
 
     @Override
-    public void deleteClient(Long id) {
-        repository.findById(id).orElseThrow(() -> new RuntimeException("Id not found"+id));
+    public void deleteClient(Long id) throws Exception {
+        repository.findById(id).orElseThrow(() -> new ModelNotFoundException("Id not found"+id));
         repository.deleteById(id);
     }
 }
