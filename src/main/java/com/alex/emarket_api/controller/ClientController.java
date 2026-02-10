@@ -2,8 +2,7 @@ package com.alex.emarket_api.controller;
 
 import com.alex.emarket_api.dto.ClientDTO;
 import com.alex.emarket_api.entity.Client;
-import com.alex.emarket_api.exception.ModelNotFoundException;
-import com.alex.emarket_api.service.ClientService;
+import com.alex.emarket_api.service.IClientService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +14,17 @@ import java.util.List;
 @RequestMapping("/api/clients")
 public class ClientController {
 
-    private final ClientService clientService;
+    private final IClientService service;
     private final ModelMapper mapper;
 
-    public ClientController(ClientService clientService, ModelMapper mapper) {
-        this.clientService = clientService;
+    public ClientController(IClientService IClientService, ModelMapper mapper) {
+        this.service = IClientService;
         this.mapper = mapper;
     }
 
     @GetMapping
     public ResponseEntity<List<ClientDTO>> getClients() throws Exception {
-        List<ClientDTO> list = clientService.getAllClients()
+        List<ClientDTO> list = service.getAllClients()
                 .stream()
                 .map(this::convertToDTO)
                 //.map(client -> mapper.map(client, ClientDTO.class))
@@ -35,25 +34,25 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientDTO> getClientById(@PathVariable("id") Long id) throws Exception {
-        ClientDTO obj = convertToDTO(clientService.getClientById(id));
+        ClientDTO obj = convertToDTO(service.getClientById(id));
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
     public ResponseEntity<ClientDTO> saveClient(@RequestBody ClientDTO clientDTO) throws Exception {
-        Client client = clientService.saveClient(convertToEntity(clientDTO));
+        Client client = service.saveClient(convertToEntity(clientDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(client));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientDTO> updateClient(@PathVariable("id") Long id, @RequestBody ClientDTO clientDTO) throws Exception {
-        Client client = clientService.updateClient(id, convertToEntity(clientDTO));
+        Client client = service.updateClient(id, convertToEntity(clientDTO));
         return ResponseEntity.ok().body(convertToDTO(client));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) throws Exception {
-        clientService.deleteClient(id);
+        service.deleteClient(id);
         return ResponseEntity.noContent().build();
     }
 

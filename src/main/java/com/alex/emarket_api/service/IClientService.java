@@ -1,11 +1,10 @@
 package com.alex.emarket_api.service;
 
 import com.alex.emarket_api.entity.Client;
-import com.alex.emarket_api.exception.ModelNotFoundException;
 
 import java.util.List;
 
-public interface ClientService {
+public interface IClientService {
 
     List<Client> getAllClients() throws Exception;
     Client getClientById(Long id) throws Exception;

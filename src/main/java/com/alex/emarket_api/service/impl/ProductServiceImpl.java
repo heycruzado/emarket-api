@@ -3,7 +3,7 @@ package com.alex.emarket_api.service.impl;
 import com.alex.emarket_api.entity.Product;
 import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.repository.ProductRepository;
-import com.alex.emarket_api.service.ProductService;
+import com.alex.emarket_api.service.IProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository repository;
 

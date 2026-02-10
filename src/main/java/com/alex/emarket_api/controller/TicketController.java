@@ -1,10 +1,8 @@
 package com.alex.emarket_api.controller;
 
 import com.alex.emarket_api.dto.TicketDTO;
-import com.alex.emarket_api.entity.Client;
 import com.alex.emarket_api.entity.Ticket;
-import com.alex.emarket_api.exception.ModelNotFoundException;
-import com.alex.emarket_api.service.TicketProductService;
+import com.alex.emarket_api.service.ITicketProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +14,10 @@ import java.util.List;
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-    private final TicketProductService service;
+    private final ITicketProductService service;
     private final ModelMapper mapper;
 
-    public TicketController(TicketProductService service, ModelMapper mapper) {
+    public TicketController(ITicketProductService service, ModelMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }

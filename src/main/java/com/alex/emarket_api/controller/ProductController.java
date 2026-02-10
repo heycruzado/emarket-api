@@ -3,7 +3,7 @@ package com.alex.emarket_api.controller;
 
 import com.alex.emarket_api.dto.ProductDTO;
 import com.alex.emarket_api.entity.Product;
-import com.alex.emarket_api.service.ProductService;
+import com.alex.emarket_api.service.IProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +17,10 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService service;
+    private final IProductService service;
     private final ModelMapper mapper;
 
-    public ProductController(ProductService service, ModelMapper mapper) {
+    public ProductController(IProductService service, ModelMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }
@@ -43,6 +43,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO productDTO) throws Exception {
         Product product = service.saveProduct(convertToEntity(productDTO));
+        System.out.println("Response DTO -> " + convertToDTO(product));
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(product));
     }
 

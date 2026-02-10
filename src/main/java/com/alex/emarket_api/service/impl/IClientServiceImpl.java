@@ -3,18 +3,18 @@ package com.alex.emarket_api.service.impl;
 import com.alex.emarket_api.entity.Client;
 import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.repository.ClientRepository;
-import com.alex.emarket_api.service.ClientService;
+import com.alex.emarket_api.service.IClientService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ClientServiceImpl implements ClientService {
+public class IClientServiceImpl implements IClientService {
 
     private final ClientRepository repository;
 
-    public ClientServiceImpl(ClientRepository repository) {
+    public IClientServiceImpl(ClientRepository repository) {
         this.repository = repository;
     }
 

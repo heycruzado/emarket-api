@@ -1,21 +1,19 @@
 package com.alex.emarket_api.service.impl;
 
-import com.alex.emarket_api.dto.TicketDTO;
-import com.alex.emarket_api.entity.Product;
 import com.alex.emarket_api.entity.Ticket;
 import com.alex.emarket_api.exception.ModelNotFoundException;
 import com.alex.emarket_api.repository.TicketRepository;
-import com.alex.emarket_api.service.TicketProductService;
+import com.alex.emarket_api.service.ITicketProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TicketServiceImpl implements TicketProductService {
+public class ITicketServiceImpl implements ITicketProductService {
 
     private final TicketRepository repository;
 
-    public TicketServiceImpl(TicketRepository repository) {
+    public ITicketServiceImpl(TicketRepository repository) {
         this.repository = repository;
     }
 
