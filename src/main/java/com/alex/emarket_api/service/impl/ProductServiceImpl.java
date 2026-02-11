@@ -45,11 +45,11 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Product updateProduct(Long id, Product product) throws Exception {
-        Product productSelected = repository.findById(id).orElseThrow(() -> new ModelNotFoundException("Id not found" + id));
+        Product productSelected = new Product();
+        productSelected.setIdProduct(id);
         productSelected.setName(product.getName());
         productSelected.setType(product.getType());
         return repository.save(productSelected);
-
     }
 
     @Override
